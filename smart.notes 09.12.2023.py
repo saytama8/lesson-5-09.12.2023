@@ -1,8 +1,19 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QApplication, QWidget, QTableWidget, QListWidget, QListWidgetItem,
-QLineEdit, QFormLayout, QHBoxLayout, QVBoxLayout, QGroupBox, QButtonGroup, QRadioButton, QPushButton, QLabel, QSpinBox, QTextEdit)
+QLineEdit, QFormLayout, QHBoxLayout, QVBoxLayout, QGroupBox, QButtonGroup, QRadioButton, QPushButton, QLabel, QSpinBox, QTextEdit, QInputDialog)
+
+import json
 
 app=QApplication([])
+
+notes = {
+    "Ласкаво просимо!"   : {
+        "текст" : "Це найкращий додаток для заміток у світі!",
+        "теги"  : ["добро", "інструкція"]
+    }
+}
+with open("notes_data.json", "w") as file:
+    json.dump(notes, file)
 
 
 window = QWidget()
@@ -16,6 +27,7 @@ text.setText("Це найкращий додаток")
 text.setStyleSheet("background-color:yellow; color:black; border: 3px solid black; border-radius:20px")
 notes1 = QLabel("Cписок заміток")
 notes1.setStyleSheet("background-color:yellow; color:black; border: 3px solid black; border-radius:30px")
+
 notes2 = QLabel("Список тегів")
 notes2.setStyleSheet("background-color:yellow; color:black; border: 3px solid black; border-radius:30px")
 
@@ -34,7 +46,7 @@ but4 = QPushButton("Додати до замітки")
 but4.setStyleSheet("background-color:blue; color:white; border: 3px solid black; border-radius:30px")
 but5 = QPushButton("Відкріпити від замітки")
 but5.setStyleSheet("background-color:blue; color:white; border: 3px solid black; border-radius:30px")
-but6 = QPushButton("Шукати зімітки по тегу")
+but6 = QPushButton("Шукати замітки по тегу")
 but6.setStyleSheet("background-color:blue; color:white; border: 3px solid black; border-radius:30px")
 
 
@@ -73,10 +85,61 @@ line_mainH.addLayout(line_V1, stretch=2)
 line_mainH.addLayout(line_V2, stretch=1)
 window.setLayout(line_mainH)
 
+def add_note():
+    note_name, ok = QInputDialog.getText(window, "Додати замітку", "Назва замітки: ")
+    if ok and note_name !="":
+        notes[note_name] = {"текст" : "", "теги" :[]}
+        items1.addItem(note_name)
+        items2.addItems(notes[note_name]["теги"])
+        print(notes)
 
+def show_note():
+    key = items1.selectedItems()[0].text()
+    print(key)
+    text.setText(notes[key]["текст"])
+    items2.clear()
+    items2.addItems(notes[key]["теги"])
+
+
+def save_note():
+    if items1.selectedItems():
+        key = items1.selectedItems()[0].text()
+        notes[key]["текст"] = text.toPlainText()
+        with open("notes_data.json", "w") as file:
+            json.dump(notes, file, sort_keys=True, ensure_ascii=False)
+        print(notes)
+    else:
+        print("Замітка для збереження не вибрана!")
+
+
+def del_note():
+    if items1.selectedItems():
+        key = items1.selectedItems()[0].text()
+        del notes[key]
+        items1.clear()
+        items2.clear()
+        text.clear()
+        items1.addItems(notes)
+        with open("notes_data.json", "w") as file:
+            json.dump(notes, file, sort_keys=True, ensure_ascii=False)
+        print(notes)
+    else:
+        print("Замітка для вилучення не обрана!")
+
+but1.clicked.connect(add_note)
+items1.itemClicked.connect(show_note)
+but3.clicked.connect(save_note)
+but2.clicked.connect(del_note)
 
 
 
 
 window.show()
+
+
+
+with open("notes_data.json", "r") as file:
+    notes = json.load(file)
+items1.addItems(notes)
+
 app.exec_()
