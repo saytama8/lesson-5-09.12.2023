@@ -7,13 +7,17 @@ app=QApplication([])
 
 window = QWidget()
 window.setWindowTitle("Розумні замітки")
+
 window.resize(900,600)
 window.move(600,300)
 
 text = QTextEdit()
 text.setText("Це найкращий додаток")
+text.setStyleSheet("background-color:yellow; color:black; border: 3px solid black; border-radius:20px")
 notes1 = QLabel("Cписок заміток")
+notes1.setStyleSheet("background-color:yellow; color:black; border: 3px solid black; border-radius:30px")
 notes2 = QLabel("Список тегів")
+notes2.setStyleSheet("background-color:yellow; color:black; border: 3px solid black; border-radius:30px")
 
 but1 = QPushButton("Створити замітку")
 but1.setStyleSheet("background-color:blue; color:white; border: 3px solid black; border-radius:30px")
@@ -23,16 +27,22 @@ but1.setStyleSheet("background-color:blue; color:white; border: 3px solid black;
 
 
 but2 = QPushButton("Видалити замітку")
+but2.setStyleSheet("background-color:blue; color:white; border: 3px solid black; border-radius:30px")
 but3 = QPushButton("Зберегти замітки")
+but3.setStyleSheet("background-color:blue; color:white; border: 3px solid black; border-radius:30px")
 but4 = QPushButton("Додати до замітки")
+but4.setStyleSheet("background-color:blue; color:white; border: 3px solid black; border-radius:30px")
 but5 = QPushButton("Відкріпити від замітки")
+but5.setStyleSheet("background-color:blue; color:white; border: 3px solid black; border-radius:30px")
 but6 = QPushButton("Шукати зімітки по тегу")
+but6.setStyleSheet("background-color:blue; color:white; border: 3px solid black; border-radius:30px")
 
 
 items1 = QListWidget()
 items2  =QListWidget()
 line = QLineEdit()
 line.setPlaceholderText("Введіть тег...")
+line.setStyleSheet("background-color:yellow; color:blac; border: 3px solid black; border-radius:30px")
 
 
 
